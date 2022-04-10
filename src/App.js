@@ -1,6 +1,6 @@
 import './App.css';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthContext, TokenContext } from './components/context'
 
 import {
@@ -11,50 +11,42 @@ import {
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Users from './pages/Users';
+
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken));
+}
+
+const getToken = () => {
+  const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken
+}
 
 function App() {
 
-  const initialLoginState = {
-    email: null,
-    token: null
-  }
-
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'LOGIN':
-        return {
-          ...prevState,
-          email: action.email,
-          token: action.token
-        }
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          email: null,
-          token: null
-        }
-    }
-  }
-
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+  const [userToken, setUserToken] = useState(getToken());
 
   const authContext = React.useMemo(() => ({
-    signIn: async(userToken, userEmail) => {
-      dispatch({type: 'LOGIN', email: userEmail, token: userToken});
+    signIn: async(userToken) => {
+      setToken(userToken);
+      setUserToken(userToken);
     },
     signOut: async() => {
-      dispatch({type: 'LOGOUT'});
+      sessionStorage.clear();
+      setUserToken('');
     }
   }), []);
 
   return (
     <>
     <AuthContext.Provider value={authContext}>
-      <TokenContext.Provider value={loginState.token}>
+      <TokenContext.Provider value={userToken}>
         <Router>
-          {loginState.token !== null ? (
+          {userToken ? (
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/users" element={<Users />} />
             </Routes>
           ) : 
             <Routes>
