@@ -45,7 +45,7 @@ function Login() {
     const response = await getLoginResponse();
 
     const token = response.token;
-    signIn(token, emailState);
+    signIn(token);
   }
 
   return (
