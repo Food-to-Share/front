@@ -1,7 +1,4 @@
 import './App.css';
-import { COLORS } from './components/colors';
-
-import { LockClosedIcon } from '@heroicons/react/solid'
 
 function App() {
   return (
@@ -63,8 +60,7 @@ function App() {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500"
-                  style={{color: COLORS.main}}
+                <a href="#" className="font-medium text-gray-800 hover:text-sky-600"
                 >
                   Forgot your password?
                 </a>
@@ -74,12 +70,8 @@ function App() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                style={{backgroundColor: COLORS.main}}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-900 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" style={{color: COLORS.main_brigther}}/>
-                </span>
                 Sign in
               </button>
             </div>
