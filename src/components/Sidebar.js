@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import { ChevronLeftIcon, ChevronRightIcon, ChartBarIcon, UsersIcon, CogIcon } from '@heroicons/react/solid'
+import { LogoutIcon } from '@heroicons/react/outline'
+import { AuthContext } from './context';
 
 function Navbar() {
     const [open, setOpen] = useState(true);
     const [current, setCurrent] = useState(0);
 
+    const { signOut } = useContext(AuthContext);
+
     const Menus = [
       { title: "Dashboard", icon: 1 },
       { title: "Users", icon: 2 },
-      { title: "Settings", icon: 3, gap: true }
+      { title: "Settings", icon: 3, gap: true },
     ];
+
+    const logout = () => signOut();
 
     return (
       <>
@@ -32,7 +38,7 @@ function Navbar() {
           <ul className="pt-6">
             {Menus.map((Menu, index) => (
               <li key={index}
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 text-gray-300 text-sm items-center gap-x-4 duration-300
+                className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 text-gray-300 text-sm items-center gap-x-4 duration-300 mb-auto
                 ${Menu.gap ? "mt-9" : "mt-2"} ${index===current && "bg-sky-600 scale-105"}`}
                 onClick={()=>setCurrent(index)}
               >
@@ -49,6 +55,17 @@ function Navbar() {
                 </span>
               </li>
             ))}
+          </ul>
+          <ul className="pt-6 mt-auto">
+            <li key={100}
+                className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 mt-2 text-gray-300 text-sm items-center gap-x-4 duration-300`}
+                onClick={()=>logout()}
+                >
+              <LogoutIcon className={`cursor-pointer w-6 text-white`} />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                  Logout
+              </span>
+            </li>
           </ul>
         </div>
       </>
