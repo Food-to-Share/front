@@ -38,9 +38,8 @@ function Navbar() {
           </div>
           <ul className="pt-6">
             {Menus.map((Menu, index) => (
-              <Link onClick={()=>setCurrent(index)} to={`${Menu.to}`}>
-                <li key={index}
-                  className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 text-gray-300 text-sm items-center gap-x-4 duration-300 mb-auto
+              <Link key={index} onClick={()=>setCurrent(index)} to={`${Menu.to}`}>
+                <li className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 text-gray-300 text-sm items-center gap-x-4 duration-300 mb-auto
                   ${Menu.gap ? "mt-9" : "mt-2"} ${index===current && "bg-sky-600 scale-105"}`}
                 >
                   
@@ -60,9 +59,8 @@ function Navbar() {
             ))}
           </ul>
           <ul className="pt-6 mt-auto">
-            <Link to="/" onClick={()=>logout()}>
-              <li key={100}
-                  className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 mt-2 text-gray-300 text-sm items-center gap-x-4 duration-300`}
+            <Link key={100} to="/" onClick={()=>logout()}>
+              <li className={`flex rounded-md p-2 cursor-pointer hover:bg-sky-600 mt-2 text-gray-300 text-sm items-center gap-x-4 duration-300`}
                   >
                 <LogoutIcon className={`cursor-pointer w-6 text-white`} />
                 <span className={`${!open && "hidden"} origin-left duration-200`}>
