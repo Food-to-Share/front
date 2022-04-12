@@ -62,36 +62,32 @@ function Users() {
       try {
             const requestOptions = {
               method: 'POST',
-              body: JSON.stringify({username:'teste', name: nameState, email: emailState, contact: contactState, address: addressState, organization: "Help4You" }),
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${tokenContext}`
-              }
+              },
+              body: JSON.stringify({username:'teste', name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
             }
           
             let response = await fetch(
               `${apiURL}/users/`, requestOptions
               );
             
-            let json = await response.json();
-      
-            return json;
+            if(response.status === 204){
+              setAddressState('');
+              setEmailState('');
+              setNameState('');
+              setContactState('');
+              setShowModal(false);
+              getOrganizationUsers();
+              return;
+            } else {
+              console.log('Error: Bad request')
+            }
           } catch (error) {
             console.error(error);
           }
-    }
-
-    const handleSubmit = async (event) => {
-      console.log("oi");
-      event.preventDefault();
-      const response = await createUser();
-
-      setAddressState('');
-      setEmailState('');
-      setNameState('');
-      setContactState('');
-      setShowModal(false)
     }
 
   const getOrganizationUsers = async() => {
@@ -121,13 +117,18 @@ function Users() {
         }
   }
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    createUser();
+  }
+
   useEffect(() => {
     getOrganizationUsers();
   }, []);
 
   return (
     <>
-      <div className="p-7 flex-1 h-screen overflow-hidden">
+      <div className="p-7 flex-1 h-screen overflow-hidden overflow-y-auto">
         <h1 className="text-2xl font-semibold">
           Users
         </h1>

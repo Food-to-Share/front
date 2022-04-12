@@ -102,7 +102,7 @@ function Table({ columns, data }) {
             )}
         </div>
         <div className="mt-2 flex flex-col">
-            <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+            <div className="-my-2 overflow-x-auto overflow-y-auto -mx-4 sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table {...getTableProps()} border="1" className="min-w-full divide-y divide-gray-200">
@@ -158,7 +158,10 @@ function Table({ columns, data }) {
             <Button onClick={() => nextPage()} disabled={!canNextPage}>Next</Button>
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div className="flex gap-x-2">
+            <div className="flex gap-x-5">
+            <span className="text-sm text-gray-700 justi">
+                Page <span className="font-bold">{state.pageIndex + 1}</span> of <span className="font-medium">{pageOptions.length}</span>
+            </span>
             <label>
                 <span className="sr-only">Items Per Page</span>
                 <select
