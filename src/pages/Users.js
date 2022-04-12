@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { apiURL } from '../components/apiURL';
 import { TokenContext } from '../components/context';
 import Table, { SelectColumnFilter } from '../components/Table';
-import './Dashboard.css';
 
 function Users() {
 
@@ -128,17 +127,10 @@ function Users() {
 
   return (
     <>
-      <div className="p-7 flex-1 h-screen">
+      <div className="p-7 flex-1 h-screen overflow-hidden">
         <h1 className="text-2xl font-semibold">
           Users
         </h1>
-        <button
-          className="bg-sky-700 text-white active:bg-pink-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-          type="button"
-          onClick={() => setShowModal(true)}
-        >
-          Add User
-        </button>
         {showModal ? (
           <>
             <div
@@ -268,8 +260,17 @@ function Users() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className='mt-4'>
+        <div className='mt-12'>
           <Table columns={columns} data={users} />
+        </div>
+        <div className="w-full text-center">
+          <button
+            className="bg-sky-700 text-white active:bg-pink-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+            onClick={() => setShowModal(true)}
+          >
+            Add User
+          </button>
         </div>
       </div>
     </>

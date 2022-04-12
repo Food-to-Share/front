@@ -47,13 +47,11 @@ function App() {
         <Router>
           {userToken ? (
             <div className="flex">
-              <Sidebar />
-              <Switch>
+              <Sidebar />            
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/users" element={<Users />} />
                 </Routes>
-              </Switch>
             </div>
           ) : 
             <Routes>
