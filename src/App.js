@@ -9,9 +9,11 @@ import {
   Routes
 } from "react-router-dom";
 
+import Sidebar from './components/Sidebar'
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
+import { Switch } from '@headlessui/react';
 
 function setToken(userToken) {
   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -44,10 +46,13 @@ function App() {
       <TokenContext.Provider value={userToken}>
         <Router>
           {userToken ? (
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/users" element={<Users />} />
-            </Routes>
+            <div className="flex">
+              <Sidebar />            
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/users" element={<Users />} />
+                </Routes>
+            </div>
           ) : 
             <Routes>
               <Route path="/" element={<Login />} />
