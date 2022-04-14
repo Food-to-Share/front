@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiURL } from '../components/apiURL';
 import { TokenContext } from '../components/context';
 import Table, { SelectColumnFilter } from '../components/Table';
+import { Loader } from '../components/Loader'
 
 function Users() {
 
@@ -9,6 +10,7 @@ function Users() {
 
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [emailState, setEmailState] = useState('');
     const [contactState, setContactState] = useState('');
@@ -129,6 +131,9 @@ function Users() {
 
   useEffect(() => {
     getOrganizationUsers();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   return (
@@ -263,7 +268,12 @@ function Users() {
           </>
         ) : null}
         <div className='mt-12'>
-          {!users.length == 0 ?
+          {isLoading ? 
+          <div className='h-64 flex items-center justify-center'>
+            <Loader />
+          </div>
+          : 
+          !users.length == 0 ?
             <Table columns={columns} data={users} />
             :
             <div id="alert-additional-content-1" class="shadow p-4 mb-4 bg-blue-100 rounded-lg dark:bg-blue-200" role="alert">
