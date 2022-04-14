@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiURL } from '../components/apiURL';
 import { TokenContext } from '../components/context';
 import Table, { SelectColumnFilter } from '../components/Table';
+import { Loader } from '../components/Loader'
 
 function Users() {
 
@@ -9,6 +10,7 @@ function Users() {
 
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [emailState, setEmailState] = useState('');
     const [contactState, setContactState] = useState('');
@@ -40,6 +42,9 @@ function Users() {
           Filter: SelectColumnFilter,
           filter: "includes",
         },
+        {
+          Header: "Options"
+        }
       ], []
     )
 
@@ -55,7 +60,7 @@ function Users() {
         setNameState(event.target.value);
     }
 
-    const handleAdressChange = (event) => {
+    const handleAddressChange = (event) => {
       setAddressState(event.target.value);
     }
 
@@ -71,7 +76,7 @@ function Users() {
               body: JSON.stringify({username:'teste', name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
             }
           
-            let response = await fetch(
+            const response = await fetch(
               `${apiURL}/users/`, requestOptions
               );
             
@@ -103,7 +108,7 @@ function Users() {
             }
           }
           
-          let response = await fetch(
+          const response = await fetch(
             `${apiURL}/users/`, requestOptions
             );
 
@@ -126,6 +131,9 @@ function Users() {
 
   useEffect(() => {
     getOrganizationUsers();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   return (
@@ -216,7 +224,7 @@ function Users() {
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                 required
                                 value={addressState}
-                                onChange={handleAdressChange}
+                                onChange={handleAddressChange}
                               />
                             </div>
                           </div>
@@ -260,7 +268,12 @@ function Users() {
           </>
         ) : null}
         <div className='mt-12'>
-          {!users.length == 0 ?
+          {isLoading ? 
+          <div className='h-64 flex items-center justify-center'>
+            <Loader />
+          </div>
+          : 
+          !users.length == 0 ?
             <Table columns={columns} data={users} />
             :
             <div id="alert-additional-content-1" class="shadow p-4 mb-4 bg-blue-100 rounded-lg dark:bg-blue-200" role="alert">
