@@ -29,7 +29,7 @@ function Login() {
             body: JSON.stringify({ email: emailState, password: passwordState })
           }
           
-          let response = await fetch(
+          const response = await fetch(
             `${apiURL}/login`, requestOptions
             );
 
@@ -44,7 +44,6 @@ function Login() {
             setLoginError("Failed to connect to server!")
           } 
           
-
           return
           
         } catch (error) {

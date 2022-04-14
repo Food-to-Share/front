@@ -40,6 +40,9 @@ function Users() {
           Filter: SelectColumnFilter,
           filter: "includes",
         },
+        {
+          Header: "Options"
+        }
       ], []
     )
 
@@ -55,7 +58,7 @@ function Users() {
         setNameState(event.target.value);
     }
 
-    const handleAdressChange = (event) => {
+    const handleAddressChange = (event) => {
       setAddressState(event.target.value);
     }
 
@@ -71,7 +74,7 @@ function Users() {
               body: JSON.stringify({username:'teste', name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
             }
           
-            let response = await fetch(
+            const response = await fetch(
               `${apiURL}/users/`, requestOptions
               );
             
@@ -103,7 +106,7 @@ function Users() {
             }
           }
           
-          let response = await fetch(
+          const response = await fetch(
             `${apiURL}/users/`, requestOptions
             );
 
@@ -216,7 +219,7 @@ function Users() {
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                 required
                                 value={addressState}
-                                onChange={handleAdressChange}
+                                onChange={handleAddressChange}
                               />
                             </div>
                           </div>
