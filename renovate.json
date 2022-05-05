@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "baseBranches": ["main", "develop"],
+  "packageRules": [
+    {
+      "description": "AutoMerge minor versions",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "AutoMerge pin versions in only one PR",
+      "matchUpdateTypes": ["pin"],
+      "automerge": true,
+      "groupName": "Pin Dependencies"
+    }
+  ]
+}
