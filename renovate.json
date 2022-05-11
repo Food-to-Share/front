@@ -2,7 +2,7 @@
   "extends": [
     "config:base"
   ],
-  "baseBranches": ["main", "develop"],
+  "baseBranches": ["develop"],
   "packageRules": [
     {
       "description": "AutoMerge minor versions",
