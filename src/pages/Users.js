@@ -10,8 +10,10 @@ function Users() {
 
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [nissState, setNissState] = useState('')
     const [emailState, setEmailState] = useState('');
     const [contactState, setContactState] = useState('');
     const [nameState, setNameState] = useState('');
@@ -64,6 +66,40 @@ function Users() {
       setAddressState(event.target.value);
     }
 
+    const handleNissChange = (event) => {
+      setNissState(event.target.value);
+    }
+
+    const verifyUser = async() => {
+      try {
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenContext}`
+          },
+          body: JSON.stringify({contact: parseInt(contactState)}),
+        }
+      
+        const response = await fetch(
+          `${apiURL}/users/verifyUserNiss`, requestOptions
+          );
+        
+        if(response.status === 200){
+          setShowVerificationModal(false);
+          setShowModal(true);
+          setCreateError('')
+          return;
+        } else if (response.status = 400){
+          setCreateError("Cannot create user");
+        }
+      } catch (error) {
+        console.error(error);
+        setCreateError("Something went wrong...")
+      }
+    }
+
     const createUser = async() => {
       try {
             const requestOptions = {
@@ -73,7 +109,7 @@ function Users() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${tokenContext}`
               },
-              body: JSON.stringify({username:'teste', name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
+              body: JSON.stringify({username:'teste',niss: nissState, name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
             }
           
             const response = await fetch(
@@ -81,6 +117,7 @@ function Users() {
               );
             
             if(response.status === 204){
+              setNissState('')
               setAddressState('');
               setEmailState('');
               setNameState('');
@@ -128,6 +165,10 @@ function Users() {
     event.preventDefault();
     createUser();
   }
+  const handleSubmitVerification = async (event) => {
+    event.preventDefault();
+    verifyUser();
+  }
 
   useEffect(() => {
     getOrganizationUsers();
@@ -142,6 +183,80 @@ function Users() {
         <h1 className="text-2xl font-semibold">
           Users
         </h1>
+          {showVerificationModal ? (
+            <>
+            <div
+              className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none"
+            >
+              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <h3 className="text-3xl font-semibold">
+                      Add User
+                    </h3>
+                  </div>
+
+                  <div className="relative p-6 flex-auto">
+                  <form onSubmit={handleSubmitVerification}>
+                      <div className="overflow-hidden sm:rounded-md">
+                          <div>
+                            <h4>
+                              
+                            </h4>
+                          </div>
+                        <div className="px-4 py-5 bg-white sm:p-6">
+                          <div className="col-span-6 sm:col-span-3">
+                            <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
+                                Social Security Identification Number (SSN):
+                            </label>
+                            <input
+                                  type="contact"
+                                  name="contact"
+                                  id="contact"
+                                  autoComplete="contact"
+                                  placeholder=' Contact'
+                                  className="mt-4 focus:ring-indigo-500 focus:border-indigo-500 w-full border-grey-500 rounded-md"
+                                  required
+                                  value={contactState}
+                                  onChange={handleContactChange}
+                                />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => {
+                            setContactState('');
+                            setShowVerificationModal(false)}}
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                    {createError && 
+                      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <strong class="font-bold">Error! </strong>
+                      <span class="block sm:inline">{createError}</span>
+                      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                      </span>
+                    </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+        ) : null}
         {showModal ? (
           <>
             <div
@@ -288,7 +403,7 @@ function Users() {
           <button
             className="bg-sky-700 text-white active:bg-pink-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowVerificationModal(true)}
           >
             Add User
           </button>
