@@ -11,10 +11,10 @@ function Dashboard() {
           <div className='widgets'>
             <Widget type="beneficiaries"/>
             <Widget type="order"/>
-            <Widget type="earning"/>
+            {/*<Widget type="earning"/>*/}
           </div>
           <div className='charts'>
-            <Featured/>
+            {/*<Featured/>*/}
             <Chart/>
           </div>
       </div>

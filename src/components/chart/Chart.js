@@ -3,54 +3,84 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const data = [
   {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    name: 'Janeiro',
+    uv: 60,
+    pv: 45,
+    amt: 41,
   },
   {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: 'Fevereiro',
+    uv: 40,
+    pv: 37,
+    amt: 49,
   },
   {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    name: 'Março',
+    uv: 70,
+    pv: 57,
+    amt: 65,
   },
   {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    name: 'Abril',
+    uv: 50,
+    pv: 70,
+    amt: 54,
   },
   {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    name: 'Maio',
+    uv: 30,
+    pv: 49,
+    amt: 39,
   },
   {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    name: 'Junho',
+    uv: 70,
+    pv: 38,
+    amt: 80,
   },
   {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    name: 'Julho',
+    uv: 80,
+    pv: 52,
+    amt: 56,
   },
+  {
+    name: 'Agosto',
+    uv: 60,
+    pv: 65,
+    amt: 78,
+  },
+  {
+    name: 'Setembro',
+    uv: 65,
+    pv: 80,
+    amt: 100,
+  },
+  {
+    name: 'Outubro',
+    uv: 90,
+    pv: 75,
+    amt: 88,
+  },
+  {
+    name: 'Novembro',
+    uv: 80,
+    pv: 68,
+    amt: 82,
+  },
+  {
+    name: 'Dezembro',
+    uv: 60,
+    pv: 48,
+    amt: 78,
+  }
 ];
 
 const Chart = () => {
     return (
         <div className="chart">
             <div className="title">Last 6 Months (Expenses)</div>
-            <ResponsiveContainer width="100%" aspect={2/1}>
+            <ResponsiveContainer width="100%" aspect={7.7/3}>
                 <AreaChart
                 width={500}
                 height={400}
