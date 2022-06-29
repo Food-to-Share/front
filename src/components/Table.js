@@ -222,18 +222,56 @@ function Table({ columns, data }) {
         }
   }
 
+  const deleteUser = async () => {
+    try {
+      const requestOptionsDelete = {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenContext}`
+        },
+        body: JSON.stringify(user),
+      }
+      console.log(user);
+      const responseUserDelete = await fetch(
+        `${apiURL}/users/${user.id}`, requestOptionsDelete
+        );
+
+      if(responseUserDelete.status === 200){
+        setShowRemoveModal(false)
+        return;
+      } else if (responseUserDelete.status === 400){
+        setUpdateError("Error deleting user");
+      }
+    } catch (error) {
+      console.error(error);
+      console.log(user);
+      setUpdateError("Something went wrong ...")
+    }
+  }
+
   const handleEditClick = (id) => {
       setShowEditModal(true);
       populateForm(id);
   }
 
   const handleRemoveClick = (id) => {
-
+      setShowRemoveModal(true);
+      populateForm(id);
   }
 
   const handleSubmit = async(event) => {
     event.preventDefault()
     updateUser();
+    setTimeout(() => {
+        window.location.reload(false);
+    }, 300);
+  }
+
+  const handleSubmitDelete = async(event) => {
+    event.preventDefault()
+    deleteUser();
     setTimeout(() => {
         window.location.reload(false);
     }, 300);
@@ -261,6 +299,60 @@ function Table({ columns, data }) {
 
   return (
     <>
+        {showRemoveModal ? (
+          <>
+            <div
+              className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            >
+              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <h3 className="text-3xl font-semibold">
+                      Delete User
+                    </h3>
+                  </div>
+
+                  <div className="relative p-6 flex-auto">
+                    <form onSubmit={handleSubmitDelete}>
+                      <div className="p-5 border-b rounded-t">
+                        <h1 className="block text-sm bold font-medium text-gray-700 mb-5 font-bold">
+                          Are you sure that you want to delete this user?
+                        </h1>
+                      </div>
+                    
+                      <div className="flex items-center justify-end p-6">
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => {
+                            setShowRemoveModal(false)}}
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    </form>
+                    {updateError && 
+                      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <strong class="font-bold">Error! </strong>
+                      <span class="block sm:inline">{updateError}</span>
+                      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                      </span>
+                    </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+        ) : null}
         {showEditModal ? (
           <>
             <div

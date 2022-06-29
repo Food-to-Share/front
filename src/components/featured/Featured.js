@@ -7,14 +7,14 @@ const Featured = () => {
     return (
         <div className="featured">
             <div className="top">
-                <h1 className="title">Meals Delivered</h1>
+                <h1 className="title">Last users</h1>
                 <MoreIcon/>
             </div>
             <div className="bottom">
                 <div className="featuredChart">
                     <CircularProgressbar value={70} text={"70%"} strokeWidth={5}/>
                 </div>
-                <p className="title">Total sales made today</p>
+                <p className="title">Last users</p>
                 <p className="amount">70/100</p>
                 <p className="desc">
                     Previous transactions processing. Last deliveries may not be included.
