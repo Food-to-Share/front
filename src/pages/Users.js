@@ -528,10 +528,9 @@ function Users() {
                   />
                   <label htmlFor="upload" style={{cursor:'pointer'}}>
                       {/*<UploadExcelIcon/>*/}
-                      <button className="bg-sky-700 text-white active:bg-sky-800 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
-                        >  
+                      <h1 className="bg-sky-700 text-white active:bg-sky-800 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">  
                         <ArrowUpIconWhite className={`cursor-pointer text-white`}/>
-                      </button>
+                      </h1>
                   </label>
               </form>
               <form onSubmit={submitUsersUploaded}>
