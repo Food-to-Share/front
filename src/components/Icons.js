@@ -22,6 +22,18 @@ export function SortIcon({ className }) {
       )
   }
 
+  export function ArrowUpIconWhite({ className }) {
+    return (
+      <svg className={className} stroke="currentColor" fill="currentColor" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="M17.71,11.29l-5-5a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-5,5a1,1,0,0,0,1.42,1.42L11,9.41V17a1,1,0,0,0,2,0V9.41l3.29,3.3a1,1,0,0,0,1.42,0A1,1,0,0,0,17.71,11.29Z"/></svg>
+      )
+  }
+
+  export function ArrowDownKeyboardIconWhite({ className }) {
+    return (
+      <svg  className={className} stroke="currentColor" fill="currentColor" width="24" height="24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"> <g> <title>Layer 1</title> <path transform="rotate(-180 12.0009 12.0025)" id="svg_1" d="m17.71,11.29l-5,-5a1,1 0 0 0 -0.33,-0.21a1,1 0 0 0 -0.76,0a1,1 0 0 0 -0.33,0.21l-5,5a1,1 0 0 0 1.42,1.42l3.29,-3.3l0,7.59a1,1 0 0 0 2,0l0,-7.59l3.29,3.3a1,1 0 0 0 1.42,0a1,1 0 0 0 0,-1.42z"/> </g> </svg>
+      )
+  }
+
   export function PersonOutlinedIcon({ className }) {
     return (
       <svg width="16px" height="16px" viewBox="0 0 16 16" style={{fill:"crimson", backgroundColor:"rgba(255, 0, 0, 0.2)"}} xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-person icon"> <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
@@ -61,5 +73,17 @@ export function SortIcon({ className }) {
   export function ArrowDownKeyboardIcon({ className }) {
     return (
       <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style={{width:"20px"}}>     <g>         <path fill="none" d="M0 0h24v24H0z"/>         <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/>     </g> </svg>
+    )
+  }
+
+  export function DownloadExcelIcon({ className }) {
+    return (
+      <svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" white-space="preserve" version="1.1"> <g> <title>Layer 1</title> <g id="svg_1"/> <g id="svg_2"/> <g id="svg_3"/> <g id="svg_4"/> <g id="svg_5"/> <g id="svg_6"/> <g id="svg_7"/> <g id="svg_8"/> <g id="svg_9"/> <g id="svg_10"/> <g id="svg_11"/> <g id="svg_12"/> <g id="svg_13"/> <g id="svg_14"/> <g id="svg_15"/> <g id="svg_16"/> <g id="svg_17"/> <g id="svg_18"/> <g id="svg_21"> <path id="svg_22" fill="#007732" d="m80.016,96l-8.297,0l-7.969,-12.961l-7.969,12.961l-7.781,0l11.367,-17.672l-10.64,-16.594l8.016,0l7.383,12.328l7.242,-12.328l7.828,0l-10.758,16.993l11.578,17.273z"/> </g> <g id="svg_24"> <path id="svg_25" fill="#007732" d="m104,80c-13.255,0 -24,10.745 -24,24s10.745,24 24,24s24,-10.745 24,-24s-10.745,-24 -24,-24zm10.882,16.988l-0.113,0.176l-8.232,11.438c-0.548,0.866 -1.508,1.398 -2.537,1.398s-1.989,-0.532 -2.536,-1.397l-8.346,-11.614c-0.529,-0.926 -0.524,-2.073 0.01,-2.994c0.535,-0.922 1.53,-1.494 2.596,-1.494l4.276,0l0,-6.501c0,-1.654 1.346,-3 3,-3l2,0c1.654,0 3,1.346 3,3l0,6.5l4.276,0c1.065,0 2.061,0.572 2.596,1.494c0.534,0.921 0.539,2.069 0.01,2.994z"/> </g> <g id="svg_26"> <g id="svg_27"> <polygon id="svg_28" fill="#FF9A30" points="84,125.95 83.95,126 84,126      "/> </g> <g id="svg_29"> <polygon id="svg_30" fill="#FF9A30" points="114,77 114,76.95 113.95,77      "/> </g> <g id="svg_31"> <path id="svg_32" fill="#007732" d="m111.071,44.243l-39.314,-39.314c-1.888,-1.888 -4.4,-2.929 -7.07,-2.929l-40.687,0c-5.514,0 -10,4.486 -10,10l0,104c0,5.514 4.486,10 10,10l59.95,0l-4,-4l-55.95,0c-3.309,0 -6,-2.691 -6,-6l0,-104c0,-3.309 2.691,-6 6,-6l40.687,0c1.603,0 3.109,0.624 4.242,1.757l39.314,39.314c1.116,1.117 1.757,2.663 1.757,4.242l0,21.637l4,4l0,-25.637c0,-2.67 -1.04,-5.181 -2.929,-7.07z"/> </g> <g id="svg_33"> <polyline id="svg_34" fill="#FFFFFF" points="113.95,77 114,76.95 110,72.95      "/> </g> </g> <g id="svg_35"/> <g id="svg_36"/> <g id="svg_37"/> <g id="svg_38"/> </g> </svg>
+    )
+  }
+
+  export function UploadExcelIcon({ className }) {
+    return (
+      <svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" white-space="preserve" version="1.1"> <g> <title>Layer 1</title> <g id="svg_1"/> <g id="svg_2"/> <g id="svg_3"/> <g id="svg_4"/> <g id="svg_5"/> <g id="svg_6"/> <g id="svg_7"/> <g id="svg_8"/> <g id="svg_9"/> <g id="svg_10"/> <g id="svg_11"/> <g id="svg_12"/> <g id="svg_13"/> <g id="svg_14"/> <g id="svg_15"/> <g id="svg_16"/> <g id="svg_17"/> <g id="svg_18"/> <g id="svg_21"> <path id="svg_22" fill="#007732" d="m80.016,96l-8.297,0l-7.969,-12.961l-7.969,12.961l-7.781,0l11.367,-17.672l-10.64,-16.594l8.016,0l7.383,12.328l7.242,-12.328l7.828,0l-10.758,16.993l11.578,17.273z"/> </g> <g transform="rotate(-180 104 104)" id="svg_24"> <path id="svg_25" fill="#007732" d="m104,80c-13.255,0 -24,10.745 -24,24s10.745,24 24,24s24,-10.745 24,-24s-10.745,-24 -24,-24zm10.882,16.988l-0.113,0.176l-8.232,11.438c-0.548,0.866 -1.508,1.398 -2.537,1.398s-1.989,-0.532 -2.536,-1.397l-8.346,-11.614c-0.529,-0.926 -0.524,-2.073 0.01,-2.994c0.535,-0.922 1.53,-1.494 2.596,-1.494l4.276,0l0,-6.501c0,-1.654 1.346,-3 3,-3l2,0c1.654,0 3,1.346 3,3l0,6.5l4.276,0c1.065,0 2.061,0.572 2.596,1.494c0.534,0.921 0.539,2.069 0.01,2.994z"/> </g> <g id="svg_26"> <g id="svg_27"> <polygon id="svg_28" fill="#FF9A30" points="84,125.95 83.95,126 84,126      "/> </g> <g id="svg_29"> <polygon id="svg_30" fill="#FF9A30" points="114,77 114,76.95 113.95,77      "/> </g> <g id="svg_31"> <path id="svg_32" fill="#007732" d="m111.071,44.243l-39.314,-39.314c-1.888,-1.888 -4.4,-2.929 -7.07,-2.929l-40.687,0c-5.514,0 -10,4.486 -10,10l0,104c0,5.514 4.486,10 10,10l59.95,0l-4,-4l-55.95,0c-3.309,0 -6,-2.691 -6,-6l0,-104c0,-3.309 2.691,-6 6,-6l40.687,0c1.603,0 3.109,0.624 4.242,1.757l39.314,39.314c1.116,1.117 1.757,2.663 1.757,4.242l0,21.637l4,4l0,-25.637c0,-2.67 -1.04,-5.181 -2.929,-7.07z"/> </g> <g id="svg_33"> <polyline id="svg_34" fill="#FFFFFF" points="113.95,77 114,76.95 110,72.95      "/> </g> </g> <g id="svg_35"/> <g id="svg_36"/> <g id="svg_37"/> <g id="svg_38"/> </g> </svg>
     )
   }

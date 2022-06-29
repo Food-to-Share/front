@@ -3,6 +3,8 @@ import { apiURL } from '../components/apiURL';
 import { TokenContext } from '../components/context';
 import Table, { SelectColumnFilter } from '../components/Table';
 import { Loader } from '../components/Loader'
+import * as XLSX from 'xlsx';
+import { ArrowDownKeyboardIconWhite, ArrowUpIconWhite, DownloadExcelIcon, UploadExcelIcon } from '../components/Icons';
 
 function Users() {
 
@@ -19,6 +21,37 @@ function Users() {
     const [nameState, setNameState] = useState('');
     const [addressState, setAddressState] = useState('');
     const [createError, setCreateError] = useState('');
+    const [excel, setExcel] = useState([]);
+    const [usersUploaded, setUsersUploaded] = useState([]);
+
+    const downloadExcel = (data) => {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+      //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+      XLSX.writeFile(workbook, "DataSheet.xlsx");
+    };
+
+    const readUploadFile = (e) => {
+      console.log(e.target.files);
+      if (e.target.files) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              const data = e.target.result;
+              const workbook = XLSX.read(data, { type: "array" });
+              const sheetName = workbook.SheetNames[0];
+              const worksheet = workbook.Sheets[sheetName];
+              const json = XLSX.utils.sheet_to_json(worksheet);
+              console.log(json);
+              json.forEach(user => {
+                console.log(user);
+                usersUploaded.push(user)
+              });
+          };
+          reader.readAsArrayBuffer(e.target.files[0]);
+      }
+  }
 
     const columns = React.useMemo(
       () => [
@@ -79,7 +112,7 @@ function Users() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${tokenContext}`
           },
-          body: JSON.stringify({contact: parseInt(contactState)}),
+          body: JSON.stringify({ssn: nissState}),
         }
       
         const response = await fetch(
@@ -89,7 +122,7 @@ function Users() {
         if(response.status === 200){
           setShowVerificationModal(false);
           setShowModal(true);
-          setCreateError('')
+          setCreateError('');
           return;
         } else if (response.status = 400){
           setCreateError("Cannot create user");
@@ -109,7 +142,7 @@ function Users() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${tokenContext}`
               },
-              body: JSON.stringify({username:'teste',niss: nissState, name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
+              body: JSON.stringify({username:'teste',ssn: nissState, name: nameState, email: emailState, contact: parseInt(contactState), address: addressState, organization: "Help4You" }),
             }
           
             const response = await fetch(
@@ -153,12 +186,74 @@ function Users() {
             let json = await response.json();
 
             setUsers(json);
+            setExcel(json);
+            //console.log(json);
             return;
           }
           
         } catch (error) {
           console.error(error);
         }
+  }
+
+  const submitUsersUploaded = async (event) => {
+    event.preventDefault();
+    //usersUploaded.forEach(user => {
+    for (const user of usersUploaded){
+      var ssnUser = user.ssn
+      var userSSN = '' + ssnUser;
+
+        try {
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${tokenContext}`
+            },
+            body: JSON.stringify({ssn: nissState}),
+          }
+        
+          const response = await fetch(
+            `${apiURL}/users/verifyUserNiss`, requestOptions
+            );
+          
+          if(response.status === 200){
+            setCreateError('');
+            try {
+              const requestOptions = {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${tokenContext}`
+                },
+                body: JSON.stringify({username:user.username, ssn: userSSN, name: user.name, email: user.email, contact: parseInt(user.contact), address: user.address, organization: user.organization }),
+              }
+              console.log(user.ssn);
+              const response = await fetch(
+                `${apiURL}/users/`, requestOptions
+                );
+              
+              if(response.status === 204){
+                console.error(response.status);
+              } else if (response.status = 400){
+                setCreateError("Cannot create user");
+              }
+            } catch (error) {
+              console.error(error);
+              setCreateError("Something went wrong...")
+            }
+          } else if (response.status = 400){
+            setCreateError("Cannot create user");
+          }
+        } catch (error) {
+          console.error(error);
+          setCreateError("Something went wrong...")
+        }  
+    };
+    getOrganizationUsers();
+    return;
   }
 
   const handleSubmit = async (event) => {
@@ -168,6 +263,15 @@ function Users() {
   const handleSubmitVerification = async (event) => {
     event.preventDefault();
     verifyUser();
+  }
+  const handleSubmitExcel = async (event) => {
+    event.preventDefault();
+    submitUsersUploaded();
+  }
+  const hiddenFileInput = React.useRef(null);
+
+  const handleUpload = async (event) => {
+    hiddenFileInput.current.click();
   }
 
   useEffect(() => {
@@ -217,8 +321,8 @@ function Users() {
                                   placeholder=' Contact'
                                   className="mt-4 focus:ring-indigo-500 focus:border-indigo-500 w-full border-grey-500 rounded-md"
                                   required
-                                  value={contactState}
-                                  onChange={handleContactChange}
+                                  value={nissState}
+                                  onChange={handleNissChange}
                                 />
                           </div>
                         </div>
@@ -242,11 +346,11 @@ function Users() {
                       </div>
                     </form>
                     {createError && 
-                      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                      <strong class="font-bold">Error! </strong>
-                      <span class="block sm:inline">{createError}</span>
-                      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <strong className="font-bold">Error! </strong>
+                      <span className="block sm:inline">{createError}</span>
+                      <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
                       </span>
                     </div>
                     }
@@ -275,6 +379,22 @@ function Users() {
                       <div className="overflow-hidden sm:rounded-md">
                         <div className="px-4 py-5 bg-white sm:p-6">
                           <div className="grid grid-cols-6 gap-6">
+                          <div className="col-span-6">
+                              <label htmlFor="niss" className="block text-sm font-medium text-gray-700">
+                                Niss
+                              </label>
+                              <input
+                                type="text"
+                                name="niss"
+                                id="niss"
+                                autoComplete="niss"
+                                placeholder='Niss'
+                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                required
+                                value={nissState}
+                                onChange={handleNissChange}
+                              />
+                            </div>
                           <div className="col-span-6 sm:col-span-3">
                               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Email
@@ -367,11 +487,11 @@ function Users() {
                       </div>
                     </form>
                     {createError && 
-                      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                      <strong class="font-bold">Error! </strong>
-                      <span class="block sm:inline">{createError}</span>
-                      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <strong className="font-bold">Error! </strong>
+                      <span className="block sm:inline">{createError}</span>
+                      <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
                       </span>
                     </div>
                     }
@@ -382,7 +502,48 @@ function Users() {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         ) : null}
-        <div className='mt-12'>
+        <div className=''>
+
+        <div className='flex justify-end'>
+            <div className='flex items-center p-6 rounded-b gap-x-3'>
+                <label>
+                  <span className="text-gray-700">Excel Download: </span>
+                </label>
+              <button onClick={()=>downloadExcel(excel)} className="bg-sky-700 text-white active:bg-sky-800 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                >  
+                <ArrowDownKeyboardIconWhite className={`cursor-pointer text-white`}/>
+              </button>
+            </div>
+            <div className='flex items-center justify-end p-6 rounded-b gap-x-4'>
+                <label>
+                  <span className="text-gray-700">Excel Upload: </span>
+                </label>
+              <form>
+                  <input
+                      type="file"
+                      name="upload"
+                      id="upload"
+                      onChange={readUploadFile}
+                      style={{display:'none'}}
+                  />
+                  <label htmlFor="upload" style={{cursor:'pointer'}}>
+                      {/*<UploadExcelIcon/>*/}
+                      <button className="bg-sky-700 text-white active:bg-sky-800 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                        >  
+                        <ArrowUpIconWhite className={`cursor-pointer text-white`}/>
+                      </button>
+                  </label>
+              </form>
+              <form onSubmit={submitUsersUploaded}>
+                <button
+                  type="submit"
+                  className="bg-sky-700 text-white active:bg-sky-800 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
           {isLoading ? 
           <div className='h-64 flex items-center justify-center'>
             <Loader />
@@ -391,10 +552,10 @@ function Users() {
           !users.length == 0 ?
             <Table columns={columns} data={users} />
             :
-            <div id="alert-additional-content-1" class="shadow p-4 mb-4 bg-blue-100 rounded-lg dark:bg-blue-200" role="alert">
-              <div class="flex items-center justify-center h-64">
-                <svg class="mr-2 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                <h3 class="text-lg font-medium text-blue-700 dark:text-blue-800">It seems that you don't have any user on your organization.</h3>
+            <div id="alert-additional-content-1" className="shadow p-4 mb-4 bg-blue-100 rounded-lg dark:bg-blue-200" role="alert">
+              <div className="flex items-center justify-center h-64">
+                <svg className="mr-2 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <h3 className="text-lg font-medium text-blue-700 dark:text-blue-800">It seems that you don't have any user on your organization.</h3>
               </div>
             </div>
           }
