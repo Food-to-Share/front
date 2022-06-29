@@ -5,74 +5,74 @@ const data = [
   {
     name: 'Janeiro',
     uv: 60,
-    pv: 45,
-    amt: 41,
+    //pv: 45,
+    //amt: 41,
   },
   {
     name: 'Fevereiro',
-    uv: 40,
-    pv: 37,
-    amt: 49,
+    uv: 57,
+    //pv: 37,
+    //amt: 49,
   },
   {
     name: 'Março',
-    uv: 70,
-    pv: 57,
-    amt: 65,
+    uv: 61,
+    //pv: 57,
+    //amt: 65,
   },
   {
     name: 'Abril',
-    uv: 50,
-    pv: 70,
-    amt: 54,
+    uv: 58,
+    //pv: 70,
+    //amt: 54,
   },
   {
     name: 'Maio',
-    uv: 30,
-    pv: 49,
-    amt: 39,
+    uv: 60,
+    //pv: 49,
+    //amt: 39,
   },
   {
     name: 'Junho',
-    uv: 70,
-    pv: 38,
-    amt: 80,
+    uv: 62,
+    //pv: 38,
+    //amt: 80,
   },
   {
     name: 'Julho',
-    uv: 80,
-    pv: 52,
-    amt: 56,
+    uv: 57,
+    //pv: 52,
+    //amt: 56,
   },
   {
     name: 'Agosto',
-    uv: 60,
-    pv: 65,
-    amt: 78,
+    uv: 61,
+    //pv: 65,
+    //amt: 78,
   },
   {
     name: 'Setembro',
-    uv: 65,
-    pv: 80,
-    amt: 100,
+    uv: 67,
+    //pv: 80,
+    //amt: 100,
   },
   {
     name: 'Outubro',
-    uv: 90,
-    pv: 75,
-    amt: 88,
+    uv: 71,
+    //pv: 75,
+    //amt: 88,
   },
   {
     name: 'Novembro',
-    uv: 80,
-    pv: 68,
-    amt: 82,
+    uv: 69,
+    //pv: 68,
+    //amt: 82,
   },
   {
     name: 'Dezembro',
-    uv: 60,
-    pv: 48,
-    amt: 78,
+    uv: 75,
+    //pv: 48,
+    //amt: 78,
   }
 ];
 
@@ -97,8 +97,8 @@ const Chart = () => {
                 <YAxis />
                 <Tooltip />
                 <Area type="monotone" dataKey="uv" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-                <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" />
+                {/*<Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" />*/}
+                {/*<Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" />*/}
                 </AreaChart>
             </ResponsiveContainer>
         </div>

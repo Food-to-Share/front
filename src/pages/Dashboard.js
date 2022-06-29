@@ -1,8 +1,9 @@
-import Featured from '../components/featured/Featured';
+
 import Chart from '../components/chart/Chart';
 import Widget from '../components/widget/widget';
 import './Dashboard.css';
 import React from 'react';
+{/*import Featured from '../components/featured/Featured';*/}
 
 function Dashboard() {
   return (
